@@ -1,0 +1,852 @@
+:root {
+    /* Layout Variables */
+    --reserved-right-width: 70px; /* Reserved space for buttons */
+    
+    /* Color Variables for Light Mode */
+    --background-color: #f5f5f5;
+    --text-color: #333;
+    --header-background: rgba(255, 235, 59, 0.3);
+    --button-background: rgba(255, 235, 59, 0.15);
+    --button-hover-background: rgba(255, 235, 59, 0.3);
+    --modal-background: rgba(0,0,0,0.5);
+    --modal-content-background: #fff;
+    --audio-player-bg-color: rgba(245, 245, 245, 0.8);
+    --audio-file-name-color: #333;
+    --mode-indicator-green: green;
+    --mode-indicator-red: red;
+
+    /* Specific Styles for the "Chapter" (formerly MP3) Button */
+    --button-red-bg: #FF0000;
+    --button-red-hover-bg: #CC0000;
+    --button-red-text: #FFFFFF;
+}
+
+.night-mode {
+    /* Color Variables for Night Mode */
+    --background-color: #121212;
+    --text-color: #e0e0e0;
+    --header-background: rgba(0, 0, 0, 0.7);
+    --button-background: rgba(100, 100, 100, 0.2);
+    --button-hover-background: rgba(100, 100, 100, 0.4);
+    --modal-background: rgba(255,255,255,0.1);
+    --modal-content-background: #1e1e1e;
+    --audio-player-bg-color: rgba(18, 18, 18, 0.8);
+    --audio-file-name-color: #e0e0e0;
+
+    /* Optional: Darker red for Chapter button in night mode
+       --button-red-bg: #832F2F;
+       --button-red-hover-bg: #B71C1C; 
+       --button-red-text: #FFFFFF;
+    */
+}
+
+/* Reset and basic styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    /* height: 100%; */ /* Commented out to avoid forcing full height */
+    margin: 0;
+}
+
+body {
+    font-family: courier;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+    /* Remove flex properties to prevent height constraints */
+    /* display: flex;
+    flex-direction: column; */
+}
+
+/* Header */
+header {
+    background-color: var(--header-background);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap; /* Removed sticky top */
+}
+
+header h1 {
+    font-size: 24px;
+    font-family: courier;
+    color: var(--text-color);
+    cursor: pointer;
+}
+
+#audio-file-name {
+    font-family: courier;
+    width: 100%;
+    text-align: left;
+    font-size: 16px;
+    margin-top: 5px;
+    color: var(--audio-file-name-color);
+    word-break: break-all;
+}
+
+.night-mode #audio-file-name {
+    color: var(--audio-file-name-color);
+}
+
+.header-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Generic Button */
+.button {
+    background-color: var(--button-background);
+    border: none;
+    border-radius: 50%;
+    padding: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    width: 45px;
+    height: 45px;
+    font-size: 12px;
+    font-family: courier;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color);
+    text-decoration: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.button:hover {
+    background-color: var(--button-hover-background);
+    transform: scale(1.05);
+}
+
+/* Red Button Style (e.g., for Chapter) */
+.button-red {
+    background-color: var(--button-red-bg);
+    color: var(--button-red-text);
+    border: none;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button-red:hover {
+    background-color: var(--button-red-hover-bg);
+    transform: scale(1.05);
+}
+
+.button-red:focus {
+    outline: 2px solid #FFFFFF;
+    outline-offset: 2px;
+}
+
+/* Add these new styles */
+/* Ensure no conflicting styles from generic .button class */
+#cont-loop-toggle {
+    background-color: #2196F3;
+    color: white; /* White text color */
+    display: flex; /* Enable Flexbox */
+    align-items: center; /* Vertical centering */
+    justify-content: center; /* Horizontal centering */
+    text-align: center; /* Center text */
+    font-weight: bold; /* Bold text for emphasis */
+    width: 100%; /* Ensure the button takes full width if needed */
+    height: 100%; /* Ensure the button takes full height if needed */
+}
+
+
+/* Main Layout */
+main {
+    /* Remove flex properties to allow natural height expansion */
+    /* flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center; */
+    display: block; /* Changed to block */
+    padding: 0 0px; /* Optional horizontal padding */
+	padding-right: 20px; /* Replace 20px with your desired padding value */
+
+}
+
+#top-buttons {
+    margin: 20px auto;      /* Centers horizontally */
+    max-width: 1024px;      /* Optional constraint */
+    width: 90%;             /* Responsive width */
+    font-size: 20px;
+    display: flex;
+    flex-direction: row;    /* Horizontal layout */
+    align-items: center;    /* Vertical center */
+    gap: 15px;              /* Space between items */
+    flex-wrap: wrap;        /* Wrap on smaller screens */
+}
+
+#top-buttons section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: center;
+    /* Removed width: 100%; so items don't stretch full width */
+}
+
+/* No shrink for top-buttons .button */
+#top-buttons .button {
+    flex-shrink: 0;
+    width: 50px;
+    height: 50px;
+    font-size: 12px;
+}
+
+/* Responsive adjustments for #top-buttons */
+@media (max-width: 768px) {
+    #top-buttons {
+        font-size: 18px;
+        gap: 10px; /* Reduced gap for smaller screens */
+    }
+
+    #top-buttons section {
+        flex-direction: row;
+        gap: 10px;
+    }
+
+    #language-selectors select {
+        /* Instead of full width, allow auto width with a min-width */
+        width: auto;
+        min-width: 100px;
+    }
+}
+
+@media (max-width: 786px) {
+    #top-buttons .button {
+        padding: 15px; /* Slightly reduced padding for smaller devices */
+        font-size: 12px;
+    }
+}
+
+/* Bottom, left, right button containers (if used) */
+#bottom-buttons {
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 10px;
+    z-index: 200;
+}
+
+#left-buttons {
+    position: fixed;
+    top: 50%;
+    left: 10px;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 200;
+}
+
+/* Right buttons at bottom-right corner */
+#right-buttons {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    z-index: 200;
+}
+#right-buttons .button {
+    width: 45px;
+    height: 45px;
+    font-size: 12px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 786px) {
+    #right-buttons .button {
+        width: 40px;
+        height: 40px;
+        font-size: 10px;
+    }
+}
+
+/* ========== MODAL WINDOW ========== */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto; /* Allows scrolling if modal content is long */
+    background-color: var(--modal-background);
+    transition: background-color 0.3s;
+}
+
+.modal-content {
+    background-color: var(--modal-content-background);
+    margin: 8% auto;
+    padding: 20px 30px;
+    border-radius: 15px;
+    width: 85%;
+    max-width: 450px;
+    position: relative;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+    transition: background-color 0.3s;
+}
+
+.modal-content h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    text-align: center;
+    color: var(--text-color);
+}
+.modal-content p {
+    font-size: 14px;
+    color: var(--text-color);
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.night-mode .modal-content {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 15px;
+    right: 25px;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+.close-button:hover,
+.close-button:focus {
+    color: #000;
+    text-decoration: none;
+}
+
+/* Mode Indicator */
+/* Mode Indicator */
+.mode-indicator {
+    display: flex; /* Change to flex to enable centering */
+    align-items: center; /* Vertical centering */
+    justify-content: center; /* Horizontal centering */
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--mode-indicator-green);
+    /* Removed margin-left to prevent horizontal offset */
+    /* margin-left: 8px; */
+    /* Optional: Add margin if spacing is needed between elements */
+    /* margin: 8px 0; */
+    border: 2px solid #fff;
+    box-shadow: 0 0 2px rgba(0,0,0,0.5);
+    transition: background-color 0.3s ease;
+}
+
+.mode-indicator.continuous {
+    background-color: var(--mode-indicator-green);
+}
+.mode-indicator.loop {
+    background-color: var(--mode-indicator-red);
+}
+
+
+#cont-loop-toggle {
+    background-color: #2196F3;
+}
+#cont-loop-toggle:hover {
+    background-color: #0b7dda;
+}
+
+/* Lesson Display Styles */
+#lesson-display {
+    background-color: #f0f0f0;
+    padding: 3px;
+    margin: 5px;
+    border-radius: 5px;
+
+    /* Removed overflow: auto; to remove the vertical scroll bar */
+    /* overflow: auto; */
+
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+#lesson-table {
+    font-size: 16px; /* Default font size */
+}
+
+/* Night mode for lesson area */
+.night-mode #lesson-display {
+    background-color: #1e1e1e;
+}
+#lesson-display table,
+#lesson-display th,
+#lesson-display td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+}
+#lesson-display th {
+    background-color: #f2f2f2;
+}
+.night-mode table,
+.night-mode th,
+.night-mode td {
+    border-color: #555;
+}
+.night-mode th {
+    background-color: #444;
+    color: #e0e0e0;
+}
+.night-mode td {
+    background-color: #1e1e1e;
+    color: #e0e0e0;
+}
+/* Alternating rows */
+#lesson-display tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+.night-mode #lesson-display tbody tr:nth-child(even) {
+    background-color: #2a2a2a;
+}
+
+/* Audio Player Positioning (fixed at bottom) */
+#audio-player {
+    width: calc(100% - var(--reserved-right-width));
+    margin-right: var(--reserved-right-width);
+    height: 15px;
+    border: 0px solid #ccc;
+    border-radius: 3px;
+    overflow: hidden;
+    margin-top: 20px;
+    box-sizing: border-box;
+    position: fixed;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(var(--audio-player-bg-color), 0.8);
+    padding: 0px;
+    box-shadow: 0 0 3px rgba(0,0,0,0.1);
+    z-index: 150;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#audio-player audio {
+    transform: scale(0.7);
+    transform-origin: center;
+}
+
+/* Landscape mode toggles (optional) */
+.landscape-mode #night-mode-toggle,
+.landscape-mode #top-buttons,
+.landscape-mode #left-buttons,
+.landscape-mode #right-buttons,
+.landscape-mode #bottom-buttons {
+    display: none;
+}
+.landscape-mode #landscape-controls {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    gap: 15px;
+    z-index: 300;
+    align-items: center;
+    width: var(--reserved-right-width);
+}
+#landscape-controls {
+    display: none;
+    width: var(--reserved-right-width);
+}
+.landscape-mode,
+#landscape-controls {
+    transition: all 0.3s ease-in-out;
+}
+#landscape-controls .button {
+    width: 50px;
+    height: 50px;
+    font-size: 14px;
+    text-align: center;
+}
+#landscape-controls .button:hover {
+    transform: scale(1.05);
+}
+
+/* Additional Responsive Adjustments */
+@media (max-width: 768px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .header-buttons {
+        margin-top: 10px;
+    }
+    #bottom-buttons {
+        bottom: 140px;
+    }
+    #audio-player {
+        bottom: 10px;
+    }
+    #top-buttons,
+    #bottom-buttons {
+        flex-direction: column;
+        align-items: center;
+    }
+    .landscape-next-button,
+    .landscape-prev-button,
+    .landscape-startpause-button {
+        display: none;
+    }
+}
+
+@media (orientation: landscape) and (max-width: 1024px) {
+    /* Flexbox handles height adjustments */
+}
+
+/* Ensuring audio controls are visible in older browsers */
+audio::-webkit-media-controls-timeline {
+    display: block;
+}
+audio::-moz-media-controls-timeline {
+    display: block;
+}
+
+/* Overlay for Enlarged Image */
+.expanded-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+.expanded-overlay.active {
+    opacity: 1;
+    pointer-events: auto;
+}
+.expanded-overlay img {
+    max-width: 90%;
+    max-height: 90%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+.expanded-overlay img:hover {
+    transform: scale(1.05);
+}
+
+/* Header Container Styles */
+.header-container {
+    width: 100%;
+    max-width: 1024px;
+    height: 191px; /* Fixed height for larger screens */
+    margin: 20px auto;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+}
+.header-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+@media (max-width: 600px) {
+    .header-container {
+        height: 30vh;
+        margin: 10px auto;
+    }
+    .header-container img {
+        border-radius: 5px;
+    }
+
+    /* Adjust audio player for smaller screens */
+    #audio-player {
+        width: 100%;
+        left: 0;
+        transform: none;
+        margin-right: 0;
+    }
+}
+
+/* Language Selectors Section */
+#language-selectors {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    margin-top: 5px;
+    justify-content: center;
+}
+
+#language1-selector,
+#language2-selector {
+    min-width: 100px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+    padding: 2px 4px;
+    font-family: courier, monospace;
+    font-size: 12px;
+    line-height: 1.2;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+    outline: none;
+    transition: background-color 0.3s ease;
+}
+#language1-selector:hover,
+#language2-selector:hover {
+    background-color: #f5f5f5;
+}
+#language1-selector:focus,
+#language2-selector:focus {
+    border-color: #333;
+}
+
+/* ============== SPEED SLIDER ============== */
+#new-speed-slider-container {
+    position: fixed;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(224, 224, 224, 0.95);
+    padding: 20px 25px;
+    border-radius: 10px;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+    display: none; /* Hidden by default */
+    z-index: 1000;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    opacity: 0;
+    visibility: hidden;
+}
+#new-speed-slider-container.show {
+    display: block;
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%);
+}
+.slider-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+#new-speed-slider {
+    -webkit-appearance: none;
+    width: 250px;
+    height: 8px;
+    background: #d3d3d3;
+    border-radius: 5px;
+    outline: none;
+    transition: background 0.3s ease;
+}
+/* WebKit track */
+#new-speed-slider::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 8px;
+    cursor: pointer;
+    background: #d3d3d3;
+    border-radius: 5px;
+}
+#new-speed-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 24px;
+    height: 24px;
+    background: #4CAF50;
+    cursor: pointer;
+    border-radius: 50%;
+    border: 2px solid #fff;
+    margin-top: -8px;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+#new-speed-slider::-webkit-slider-thumb:hover {
+    background: #45a049;
+    transform: scale(1.1);
+}
+/* Mozilla track */
+#new-speed-slider::-moz-range-track {
+    width: 100%;
+    height: 8px;
+    cursor: pointer;
+    background: #d3d3d3;
+    border-radius: 5px;
+}
+#new-speed-slider::-moz-range-thumb {
+    width: 24px;
+    height: 24px;
+    background: #4CAF50;
+    cursor: pointer;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    transition: background 0.3s ease, transform 0.3s ease;
+}
+#new-speed-slider::-moz-range-thumb:hover {
+    background: #45a049;
+    transform: scale(1.1);
+}
+.speed-display {
+    color: #444;
+    font-size: 16px;
+    font-weight: normal;
+    min-width: 40px;
+    text-align: center;
+}
+#new-speed-slider:focus {
+    outline: 2px solid #4CAF50;
+}
+@media (max-width: 600px) {
+    #new-speed-slider-container {
+        width: 90%;
+        padding: 15px 20px;
+    }
+    #new-speed-slider {
+        width: 200px;
+    }
+    .speed-display {
+        font-size: 16px;
+        min-width: 35px;
+    }
+}
+
+/* Additional language-select modifications for a bigger font (16px) */
+.language-selectors {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 10px;
+}
+.language-select {
+    font-family: courier, monospace;
+    font-size: 16px; /* Larger text */
+    padding: 6px 12px;
+    min-width: 120px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #fff;
+    color: #333;
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+.language-select:hover {
+    border-color: #888;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+.language-select:focus {
+    border-color: #444;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+}
+.night-mode .language-select {
+    background-color: #2a2a2a;
+    color: #e0e0e0;
+    border-color: #555;
+}
+.night-mode .language-select:hover {
+    border-color: #aaa;
+}
+.night-mode .language-select:focus {
+    border-color: #fff;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+/* Subheader Container Styles */
+.subheader-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 1024px;
+    margin: 20px auto;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    padding-left: 7%;
+    /* Additional subheader styling if needed */
+}
+
+#lesson-display {
+    padding-bottom: 40px; /* Adjust as needed */
+}
+
+/* Cookie Consent Banner */
+.cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: navy;
+    color: white;
+    padding: 15px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    transition: transform 0.3s ease-in-out;
+    transform: translateY(0); /* Visible by default */
+}
+
+/* Hidden state for the banner */
+.cookie-banner.hidden {
+    transform: translateY(100%);
+}
+
+.cookie-banner p {
+    margin: 0;
+    flex: 1 1 auto;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.cookie-banner a {
+    color: white;
+    text-decoration: underline;
+}
+.cookie-banner a:hover {
+    color: white;
+    text-decoration: none;
+}
+
+/* OK Button Styling */
+.btn-cookie {
+    background-color: white;
+    color: navy;
+    border: 2px solid white;
+    border-radius: 5px;
+    padding: 10px 20px;
+    cursor: pointer;
+    font-family: courier, monospace;
+    font-size: 14px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    margin-left: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+.btn-cookie:hover {
+    background-color: #f2f2f2;
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+.btn-cookie:focus {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}

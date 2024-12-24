@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--****************************************************************************************************-->
+<!--***************************************** The Kitty Coach ******************************************-->
+<!--**************************************** December 24, 2024 *****************************************-->
+<!--****************************************************************************************************-->
+<!--****************************************** Version 1.00 ********************************************-->
+<!--**************************************** December 24, 2024 *****************************************-->
+<!--****************************************************************************************************-->
+<!-------------------------------------------------------------------------------------------------------->
+<!------------------------------------ Code by: Bernd Sebastian Kamps ------------------------------------>
+<!------------------------------------ Coauthor: Patricia Bourcillier ------------------------------------> 
+<!-------------------------------------------------------------------------------------------------------->
+<!-- Description: The Kitty Coach is a web-based language learning platform that                        -->
+<!-- integrates educational texts with corresponding audio and 30 translations.                         -->
+<!--****************************************************************************************************-->
+<!-- Repository: https://github.com/bsk54/TheKittyCoach.git ---------------------------------------------->
+<!-- Web site: https://aioPop.com/KittyCoach ------------------------------------------------------------->
+<!--****************************************************************************************************-->
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta property="og:title" content="Kitty Coach - Immersive Multilingual Language Learning Platform">
+<meta property="og:description" content="Explore Kitty Coach, a web-based platform with dozens of chapters in 30 translations, offering professional audio for major languages and text-to-speech for others. Learn languages effectively through integrated texts and audio narrations.">
+<meta property="og:image" content="URL_to_image">
+<meta property="og:url" content="https://yourwebsite.com">
+<meta property="og:type" content="website">
+
+<title>Kitty Coach - Immersive Multilingual Language Learning Platform</title>
+
+  <link rel="stylesheet" href="kitty.css">
+  
+  <!-- Matomo -->
+  <script>
+    var _paq = window._paq = window._paq || [];
+    /* tracker methods like "setCustomDimension" should be called before "trackPageView" */
+    _paq.push(['disableCookies']);
+    _paq.push(['enableHeartBeatTimer']);
+    _paq.push(['trackPageView']);
+    _paq.push(['enableLinkTracking']);
+    (function() {
+      var u="https://aiopop.com/matnogo/";
+      _paq.push(['setTrackerUrl', u+'matomo.php']);
+      _paq.push(['setSiteId', '3']);
+      var d=document, g=d.createElement('script'), s=d.getElementsByTagName('script')[0];
+      g.async=true; g.src=u+'matomo.js'; s.parentNode.insertBefore(g,s);
+    })();
+  </script>
+  <!-- End Matomo Code -->
+</head>
+
+<body>
+
+  <header>
+    <div class="header-container" id="headerImageContainer">
+      <img src="KittyCoach.jpg" alt="Header Image" id="headerImage">
+    </div>
+    <div style="display: flex; flex-direction: column;">
+      <h1 id="header-title"><!--The Audio Kangaroo--></h1>
+
+    </div>
+    <div class="header-buttons">
+      <!-- Additional header buttons can be added here -->
+    </div>
+  </header>
+
+  <!-- Overlay for Enlarged Image -->
+  <div class="expanded-overlay" id="imageOverlay">
+    <img src="" alt="Enlarged Image" id="enlargedImage">
+  </div>
+
+  <main>
+    <div id="top-buttons">
+      <section id="file-inputs">
+        <!-- Renamed from "MP3" to "Chapter" and applied a red button style -->
+        <label
+          id="open-modal-button"
+          class="button button-red"
+          title="Load Chapter or MP3"
+          aria-label="Load Chapter or MP3"
+        >
+          Chapter
+        </label>
+
+        <button
+          id="snippet-counter-button"
+          class="button"
+          title="Number of snippets"
+          aria-label="Number of snippets"
+        >
+          0/0
+        </button>
+        <button
+          id="night-mode-toggle"
+          class="button"
+          title="Toggle Night Mode"
+          aria-label="Toggle Night Mode"
+        >
+          🌙
+        </button>
+      </section>
+
+      <!-- Language Selectors for Dual Column -->
+      <section id="language-selectors" class="language-selectors">
+        <select id="language1-selector" class="language-select"></select>
+        <select id="language2-selector" class="language-select"></select>
+      </section>
+    </div>
+
+    <section id="audio-player" style="margin-top: 20px;">
+      <audio id="audio" controls style="width: 100%; max-width: 600px;"></audio>
+    </section>
+
+    <section id="command-buttons" style="margin-top: 20px;">
+      <div id="left-buttons">
+        <!-- (Optional) Left-side buttons can be added here if needed -->
+      </div>
+
+      <div id="right-buttons" style="display: flex; align-items: center; gap: 10px; flex-wrap: wrap;">
+        <a
+          href="index.html"
+          class="button"
+          id="home-button"
+          title="Home"
+          aria-label="Home"
+        >
+          H
+        </a>
+
+        <button
+          class="button"
+          id="font-toggle"
+          title="Toggle Font Size"
+          aria-label="Toggle Font Size"
+        >
+          S
+        </button>
+
+        <button
+          class="button"
+          id="play-pause"
+          title="Play/Pause"
+          aria-label="Play or Pause"
+        >
+          ▶
+        </button>
+
+        <button
+          class="button"
+          id="cont-loop-toggle"
+          title="Toggle Continuous/Loop Mode"
+          aria-label="Toggle Continuous or Loop Mode"
+        >
+          Cont.
+        </button>
+
+        <span
+          id="mode-indicator"
+          class="mode-indicator"
+          title="Current Mode Indicator"
+          role="status"
+          aria-label="Current Mode Indicator"
+        ></span>
+
+        <button
+          class="button"
+          id="next-snippet"
+          title="Next Snippet"
+          aria-label="Next Snippet"
+        >
+          +
+        </button>
+
+        <button
+          class="button"
+          id="last-snippet"
+          title="Previous Snippet"
+          aria-label="Previous Snippet"
+        >
+          -
+        </button>
+
+        <button class="button" id="speed-toggle">1.0x</button>
+
+        <div id="new-speed-slider-container" class="slider-container" aria-hidden="true">
+          <div class="slider-wrapper">
+            <input
+              type="range"
+              id="new-speed-slider"
+              min="0.4"
+              max="2"
+              step="0.05"
+              value="1.0"
+              aria-label="Playback Speed Slider"
+              tabindex="0"
+            >
+            <span id="new-speed-display" class="speed-display">1.0x</span>
+          </div>
+        </div>
+
+        <button
+          class="button"
+          id="pause-toggle"
+          title="Pause Between Snippets"
+          aria-label="Pause Between Snippets"
+        >
+          P0
+        </button>
+
+        <button
+          class="button"
+          id="rewind-3"
+          title="Rewind 3 Seconds"
+          aria-label="Rewind 3 Seconds"
+        >
+          -3s
+        </button>
+
+        <button
+          class="button"
+          id="forward-3"
+          title="Forward 3 Seconds"
+          aria-label="Forward 3 Seconds"
+        >
+          +3s
+        </button>
+      </div>
+
+      <div id="bottom-buttons">
+        <!-- Bottom-side buttons can be added here if needed -->
+      </div>
+    </section>
+
+    <!-- Subheader Container -->
+    <div class="subheader-container">
+      <h1 id="subheader-title">Kitty Coach</h1>
+      <div id="audio-file-name">No audio file loaded.</div>
+    </div>
+
+    <div id="lesson-display"></div>
+
+  </main>
+
+  <!-- Modal for initial file selection -->
+  <div id="initial-file-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+      <span class="close-button" id="close-initial-modal">&times;</span>
+      <h2>Select a chapter</h2>
+      <p>... and click "Load".</p>
+
+      <div style="margin-bottom: 20px;">
+        <select id="server-mp3-list">
+          <!-- Dynamic list from kitty.js fillMp3Menu() -->
+        </select>
+      </div>
+
+      <div style="margin-bottom: 20px;">
+        <input type="hidden" id="initial-audio-file" accept=".mp3,.wav,.ogg">
+      </div>
+
+      <button id="load-selected-mp3" class="button" style="font-size:16px">
+        Load
+      </button>
+    </div>
+  </div>
+
+  <!-- Speed Slider Container (hidden by default) -->
+  <div
+    id="new-speed-slider-container"
+    class="slider-container"
+    aria-hidden="true"
+    style="display:none;"
+  >
+    <div class="slider-wrapper">
+      <input type="range" id="new-speed-slider" ... >
+      <span id="new-speed-display" class="speed-display">1.0x</span>
+    </div>
+  </div>
+
+  <!-- snippetData, lessons, scripts... -->
+  <script src="snippetDataENG.js"></script>
+  <script src="snippetDataFRA.js"></script>
+  <script src="snippetDataITA.js"></script>
+  <script src="snippetDataPOR.js"></script>
+  <script src="snippetDataESP.js"></script>
+  <script src="snippetDataCHI.js"></script>
+
+  <script src="GigaSardinian_snp.js"></script>
+  <script src="Kitty_txt.js"></script>
+  <!-- Main Script (must be last) -->
+  <script src="kitty.js"></script>
+
+  <!-- Cookie Consent Banner Scripts -->
+  <script>
+    // Function to check if the user has already consented
+    function checkBanner() {
+      const consent = localStorage.getItem('cookieConsent');
+      if (!consent) {
+        document.getElementById('cookie-banner').classList.remove('hidden');
+      }
+    }
+
+    // Function to close the banner and store consent
+    function closeBanner() {
+      document.getElementById('cookie-banner').classList.add('hidden');
+      localStorage.setItem('cookieConsent', 'true');
+    }
+
+    // Attach functions to window load event without overwriting existing onload functions
+    window.addEventListener('load', function() {
+      checkBanner();
+    });
+  </script>
+
+  <!-- Cookie Consent Banner HTML -->
+  <div id="cookie-banner" class="cookie-banner hidden">
+    <p id="cookie-banner-text">
+      We do not use cookies to store personal data about our visitors. See our 
+      <a href="https://aiopop.com/privacy.html" target="_blank" rel="noopener noreferrer">privacy policy</a>.
+    </p>
+    <button id="btnCookie" class="btn-cookie" onclick="closeBanner()">OK</button>
+  </div>
+
+</body>
+</html>
